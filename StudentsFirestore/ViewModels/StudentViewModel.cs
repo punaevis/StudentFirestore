@@ -45,7 +45,7 @@ public partial class StudentViewModel
 
     public async Task GetAll()
     {
-        Students = [];
+        Students.Clear();
         var items = await _firestoreService.GetAllStudent();
         foreach (var item in items)
         {

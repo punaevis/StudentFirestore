@@ -17,7 +17,7 @@ public class FirestoreService
     {
         if (db == null)
         {
-            var stream = await FileSystem.OpenAppPackageFileAsync("dx212-students-firebase-adminsdk-u7ipx-9952afb609.json");
+            var stream = await FileSystem.OpenAppPackageFileAsync("dx212-students-firebase-adminsdk-u7ipx-7359f45a0c.json");
             var reader = new StreamReader(stream);
             var contents = reader.ReadToEnd();
             db = new FirestoreDbBuilder
@@ -37,8 +37,8 @@ public class FirestoreService
             var data = await db.Collection("Students").GetSnapshotAsync();
             var students = data.Documents.Select(doc =>
             {
-                var student= new StudentModel();
-                student.Id = doc.Id;
+                var student = new StudentModel();
+                student.Id = doc.GetValue<string>("ID");
                 student.Code = doc.GetValue<string>("Code");
                 student.Name = doc.GetValue<string>("Name");
                 return student;
@@ -60,6 +60,7 @@ public class FirestoreService
             await SetupFireStore();
             var studentData = new Dictionary<string, object>
             {
+                { "ID", student.Id },
                 { "Code", student.Code },
                 { "Name", student.Name }
                 // Add more fields as needed
@@ -83,6 +84,7 @@ public class FirestoreService
             // Manually create a dictionary for the updated data
             var studentData = new Dictionary<string, object>
             {
+                { "ID", student.Id },
                 { "Code", student.Code },
                 { "Name", student.Name }
                 // Add more fields as needed
